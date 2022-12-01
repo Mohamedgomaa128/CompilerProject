@@ -18,17 +18,23 @@ int main() {
 class Node {
 //private :
 
+	// constructor to give id incrementally
 
 //public :
 	int id;
 	//set<Transation> children;
 };
 
-class Transation {
+class Transition {
+
 	Node *from, *to;
 	char transVal;
+	Transition(){
+		//empty constructor
+	}
 
-	Transation(Node* f, Node *t, char val){
+	Transition(Node* f, Node *t, char val){
+		Transition();
 		this->from = f;
 		this->to = t;
 		this->transVal = val;
@@ -41,20 +47,21 @@ class NFA {
 	 */
 
 	Node *start, *end;
-	set<Node *> states;
-	map<Node *, set<Transation *>> transOfNodes;
+	set<Node *> nodes;
+	map<Node *, set<Transition *>> transOfNodes;
+
 
 	NFA(char val){
 		addNode(this->start = new Node());
 		addNode(this->end = new Node());
-		addTrans(start, new Transation(start, end, val));
+		addTrans(start, new Transition(start, end, val));
 	}
 
 	void addNode(Node *node){
-		this->states.insert(node);
+		this->nodes.insert(node);
 	}
 
-	void addTrans(Node * node, Transation * t){
+	void addTrans(Node * node, Transition * t){
 		this->transOfNodes[node].insert(t);
 	}
 	NFA * clone(){
@@ -64,11 +71,26 @@ class NFA {
 	NFA* concat(NFA *first, NFA *second) {
 		NFA * fcopy = first->clone();
 		NFA * scopy = second->clone();
-		Node * firstEnd = fcopy->end;
-		Node * secondStart = scopy->start;
-		// revise merging of the two maps
-		fcopy->transOfNodes.merge(scopy->transOfNodes);
-		fcopy->addTrans(firstEnd, new Transation(firstEnd, secondStart, EPSILON));
+
+		// delete last node of first nfa
+		fcopy->nodes.erase(fcopy->end);
+		// move edges to the first node of second nfa
+		for (Node* n : fcopy->nodes)
+			for (Transition* t : this->transOfNodes[n])
+				if (t->to == fcopy->end)
+					t->to = scopy->start;
+
+		for (Node *n : scopy->nodes){
+			fcopy->addNode(n); // add the nodes to the first
+
+			// add the transations to the first
+			for (Transition * t : scopy->transOfNodes[n])
+				fcopy->addTrans(n, t);
+		}
+
+		fcopy->end = scopy->start;
+
+
 		return fcopy;
 	}
 
