@@ -3,6 +3,7 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include <unordered_map>
+#include <cctype>
 using namespace std;
 
 typedef vector<int> vi;
@@ -19,11 +20,13 @@ class Node {
 
 public :
 	int id;
+	bool acceptingNode;
 	//set<Transation> children;
 	Node * clone(){
 		// temp function;
 		Node * n = new Node();
 		n->id = this->id;
+		n->acceptingNode = this->acceptingNode;
 		return n;
 	}
 };
@@ -49,7 +52,7 @@ class NFA {
 	/*
 	  NFA >> concat , union, kleane closure, positive closure
 	 */
-
+public :
 	Node *start, *end;
 	set<Node *> nodes;
 	map<Node *, set<Transition *>> transOfNodes;
@@ -169,39 +172,140 @@ class NFA {
 
 		return f;
 	}
-};
 
-int main() {
-	NFA* nfa = new NFA();
+	set<char> getInputSymbols(){
+		set<char> inputSymbols;
+		for (Node * n : nodes){
+			for (Transition* t : this->transOfNodes[n])
+				if (t->transVal != EPSILON)
+					inputSymbols.insert(t->transVal);
+		}
 
-	return 0;
-}
-
-
-/*
-class RegToNFA {
-	// thomson construction
-
-
+		return inputSymbols;
+	}
 };
 
 
-class NFAToCNFA{
-	// just a simple function
+class DFA {
+	Node* stNode;
+	map<Node*, set<Transition *>> nTrans;
+	map<Node*, set<Transition *>> dTrans;
+	map<set<Node *>, Node*> groupedStates;
+	set<Node*> dStates;
+	set<char > inputSymbols;
+
+
+
+
+	void build(NFA* nfa){
+		this->nTrans = nfa->transOfNodes;
+		this->inputSymbols = nfa->getInputSymbols();
+
+		set<Node*> n = epsClosure(this->stNode);
+		groupedStates[n] = new Node();
+		this->stNode = n;
+
+		set<set<Node*>> statesBeforeMapping;
+		statesBeforeMapping.insert(n);
+
+		map<set<Node*>, bool> visited;
+		visited[n] = false;
+
+		while (!n.empty){
+			visited[n] = true;
+			modifyAcceptingState(groupedStates[n], n);
+
+
+			for (char ch : this->inputSymbols){
+				set<Node*> newNode = epsClosure(move(n, ch));
+				if (!newNode.empty()){
+
+					if (statesBeforeMapping.find(newNode) == statesBeforeMapping.end()){
+						groupedStates[newNode] = new Node();
+						statesBeforeMapping.insert(n);
+						visited[n] = false;
+						modifyAcceptingState(groupedStates[newNode], newNode);
+					}
+					dTrans[groupedStates[n]].insert(new Transition(groupedStates[n], groupedStates[newNode], ch));
+				}
+			}
+			n = getUnvisited(visited);
+		}
+	}
+
+
+	set<Node*> getUnvisited(map<set<Node*>, bool>& visited){
+		set<Node*> empty;
+
+		for (auto entry : visited)
+			if (entry.second == false)
+				return entry.first;
+
+		return empty;
+	}
+
+	set<Node *> epsClosure(Node* n){
+		set<Node *> ret = {n};
+		stack<Node*> stk;
+		stk.push(n);
+
+		while (!stk.empty()){
+			Node* node = stk.top();
+			stk.pop();
+			// go to next level of nodes >> if new add and dfs from it
+			for (Transition * t : this->nTrans[node])
+				if (t->transVal == EPSILON && t->to != nullptr
+						&& ret.find(t->to) == ret.end()){
+					ret.insert(t->to);
+					stk.push(t->to);
+				}
+		}
+
+		return ret;
+	}
+
+	set<Node *> epsClosure(set<Node *> n){
+		set<Node *> ret(n.begin(), n.end());
+
+		for (Node * node : n){
+			set<Node *> eps = epsClosure(node);
+			ret.insert(eps.begin(), eps.end());
+		}
+
+		return ret;
+	}
+	set<Node*> move(Node* n, char ch){
+		set<Node *> nextNodes;
+		set<Transition*> transi = this->nTrans[n];
+		for (Transition* t : transi)
+			if (t->transVal == ch)
+				nextNodes.insert(t->to);
+
+		return nextNodes;
+	}
+
+	set<Node*> move(set<Node*> n, char ch){
+		set<Node *> nextNodes;
+		for (Node* node : n){
+			set<Node *> ret = move(node, ch);
+			if (!ret.empty())
+				nextNodes.insert(ret.begin(), ret.end());
+		}
+
+		return nextNodes;
+	}
+
+	void modifyAcceptingState(Node* newNode, set<Node*>& old){
+		for (Node * node : old)
+			if (node->acceptingNode){
+				newNode->acceptingNode = true;
+
+				//
+				return;
+			}
+		newNode->acceptingNode = false;
+	}
 
 };
 
-class CNFAToDFA{
-	// subset construction
 
-};
-
-class Minimization{
-	// choose a way for minimization
-
-};
-
-
-
-
-*/
