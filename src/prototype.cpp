@@ -14,14 +14,11 @@ const char EPSILON = '#';
 
 
 class Node {
-//private :
-
-	// constructor to give id incrementally
 
 public :
 	int id;
 	bool acceptingNode;
-	//set<Transation> children;
+
 	Node * clone(){
 		// temp function;
 		Node * n = new Node();
@@ -32,16 +29,13 @@ public :
 };
 
 class Transition {
-
-	Node *from, *to;
+public:
+	Node* from;
+	Node* to;
 	char transVal;
-	Transition(){
-		//empty constructor
-	}
 
 public:
 	Transition(Node* f, Node *t, char val){
-		Transition();
 		this->from = f;
 		this->to = t;
 		this->transVal = val;
@@ -193,17 +187,24 @@ class DFA {
 	map<set<Node *>, Node*> groupedStates;
 	set<Node*> dStates;
 	set<char > inputSymbols;
+	bool buildOrMin; // build >> nTrans,
 
-
+	DFA(NFA* nfa){
+		buildOrMin = true;
+		this->build(nfa);
+		buildOrMin = false;
+		this->build(nfa);
+	}
 
 
 	void build(NFA* nfa){
+
 		this->nTrans = nfa->transOfNodes;
 		this->inputSymbols = nfa->getInputSymbols();
 
 		set<Node*> n = epsClosure(this->stNode);
 		groupedStates[n] = new Node();
-		this->stNode = n;
+		this->stNode = groupedStates[n];
 
 		set<set<Node*>> statesBeforeMapping;
 		statesBeforeMapping.insert(n);
@@ -211,21 +212,24 @@ class DFA {
 		map<set<Node*>, bool> visited;
 		visited[n] = false;
 
-		while (!n.empty){
+		// loop on each unvisited states and get epsClosure and possible moves getting all levels and add them to the dfa
+		while (!n.empty()){
+			//mark as visited
 			visited[n] = true;
 			modifyAcceptingState(groupedStates[n], n);
 
-
+			// next level of nodes by moving and getting epsClosure
 			for (char ch : this->inputSymbols){
 				set<Node*> newNode = epsClosure(move(n, ch));
-				if (!newNode.empty()){
-
+				if (!newNode.empty()){ // added to the next level of n
+					//if not found >> add i
 					if (statesBeforeMapping.find(newNode) == statesBeforeMapping.end()){
 						groupedStates[newNode] = new Node();
-						statesBeforeMapping.insert(n);
-						visited[n] = false;
+						statesBeforeMapping.insert(newNode);
+						visited[newNode] = false;
 						modifyAcceptingState(groupedStates[newNode], newNode);
 					}
+					// add the transition
 					dTrans[groupedStates[n]].insert(new Transition(groupedStates[n], groupedStates[newNode], ch));
 				}
 			}
@@ -235,6 +239,8 @@ class DFA {
 
 
 	set<Node*> getUnvisited(map<set<Node*>, bool>& visited){
+		//get first unvisited form the visited map
+
 		set<Node*> empty;
 
 		for (auto entry : visited)
@@ -245,6 +251,7 @@ class DFA {
 	}
 
 	set<Node *> epsClosure(Node* n){
+		//get epsilon closure of set of a Node
 		set<Node *> ret = {n};
 		stack<Node*> stk;
 		stk.push(n);
@@ -265,6 +272,7 @@ class DFA {
 	}
 
 	set<Node *> epsClosure(set<Node *> n){
+		//get epsilon closure of set of Nodes
 		set<Node *> ret(n.begin(), n.end());
 
 		for (Node * node : n){
@@ -274,9 +282,13 @@ class DFA {
 
 		return ret;
 	}
+
 	set<Node*> move(Node* n, char ch){
+		// move a node by a char
+
 		set<Node *> nextNodes;
-		set<Transition*> transi = this->nTrans[n];
+		// for build or minimization
+		set<Transition*> transi = (buildOrMin ? this->nTrans[n] : this->dTrans[n]);
 		for (Transition* t : transi)
 			if (t->transVal == ch)
 				nextNodes.insert(t->to);
@@ -285,6 +297,7 @@ class DFA {
 	}
 
 	set<Node*> move(set<Node*> n, char ch){
+		// move a set of nodes by char
 		set<Node *> nextNodes;
 		for (Node* node : n){
 			set<Node *> ret = move(node, ch);
@@ -296,6 +309,7 @@ class DFA {
 	}
 
 	void modifyAcceptingState(Node* newNode, set<Node*>& old){
+		// if one of old node is accepting convert current to accepting
 		for (Node * node : old)
 			if (node->acceptingNode){
 				newNode->acceptingNode = true;
@@ -305,6 +319,127 @@ class DFA {
 			}
 		newNode->acceptingNode = false;
 	}
+
+	void minimize() {
+		set<set<Node*>> groups;
+		unordered_map<bool, set<Node*>> mapp;
+		// first to two groups
+
+		for (auto entiry : groupedStates){
+			Node* n = entiry.second;
+			mapp[n->acceptingNode].insert(n);
+		}
+
+		groups.insert(mapp[true]);
+		groups.insert(mapp[false]);
+
+		// Continually partition them into groups according to input till be minimum
+		bool notMinimized = true;
+		while (notMinimized){
+			set<set<Node*>> newGroups(groups.begin(), groups.end());
+			for (char ch : inputSymbols)
+				newGroups = partition(newGroups, ch);
+			if (newGroups == groups)
+				notMinimized = false;
+
+			groups = newGroups;
+		}
+	}
+
+	set<set<Node*>> partition(set<set<Node*>>& groups, char ch){
+
+		set<set<Node*>> newGroups;
+
+		for (set<Node*> g : groups){
+			// choose a set
+			unordered_map<Node*, bool> visited;
+
+			for (Node* node : g)
+				visited[node] = false;
+
+			//select each unvisited node and loop on other O(n^2) passing
+			set<Node*>::iterator it;
+			for (it = g.begin(); it != g.end(); it++){
+				Node* node1 = *it;
+				if (visited[node1])
+					continue;
+
+				set<Node*> subGroup;
+				subGroup.insert(node1);
+				visited[node1] = true;
+
+				set<Node*>::iterator secondIt = next(it, 1);
+				for (; secondIt != g.end(); secondIt++){
+					Node* node2 = *secondIt;
+
+					if (visited[node2])
+						continue;
+					//get nodes go to same state and add them to same group
+
+					if (goToSameGroup(groups, node1, node2, ch)){
+						subGroup.insert(node2);
+						visited[node2] = true;
+					}
+				}
+				// now add new group
+				newGroups.insert(subGroup);
+			}
+		}
+
+		return newGroups;
+	}
+
+	bool goToSameGroup(set<set<Node*>>& groups, Node* n1, Node* n2, char ch){
+		// to same group ?
+		set<Node*> next1 = move(n1, ch);
+		set<Node*> next2 = move(n2, ch);
+
+		if (next1.empty() && next2.empty())
+			return true;
+
+		// different
+		if ((next1.empty() && !next2.empty()) || (!next1.empty() && next2.empty()))
+			return false;
+
+		Node* nn1 = *next1.begin();
+		Node* nn2 = *next2.begin();
+
+		// loop till found group where they go to
+		for (set<Node*> group : groups)
+			if (group.find(nn1) != group.end() && group.find(nn2) != group.end())
+				return true;
+
+		return false;
+	}
+
+	void mapGroupsToStates(set<set<Node*>> groups){
+		unordered_map<Node*, Node*> repStates;
+		for (set<Node*> group : groups){
+			// for each set choose a representative
+			Node* repNode = *group.begin();
+			repStates[repNode] = repNode;
+
+			for (Node * node : group)
+				repStates[node] = repNode;
+		}
+
+		// add new nodes
+		for (auto entiry : repStates)
+			dStates.insert((Node *) entiry.second);
+
+		map<Node*, set<Transition*>> newTrans;
+
+		// loop on each and add trans
+		for (set<Node*> group : groups){
+			Node* repNode = repStates[*group.begin()];
+			// all nodes in same group has same transitions >> to same group
+			for (Transition* t : dTrans[repNode])
+				newTrans[repNode].insert(new Transition(repNode, repStates[t->to], t->transVal));
+		}
+
+		dTrans = newTrans;
+	}
+
 
 };
 
