@@ -10,21 +10,21 @@ using namespace std;
 class Element {
 	// generalization for terminals and nonterminals
 	int id;
+	Element(int id){
+		this->id = id;
+	}
 };
 
-class Terminal {
-	Element* e;
-	public :
-	Terminal(Element* ee) {
-		this->e = ee;
+class Terminal : Element {
+
+	Terminal(int id) : Element(id){
+
 	}
 };
 
 class NonTerminal {
-	Element* e;
-	public :
-	NonTerminal(Element* ee) {
-		this->e = ee;
+	NonTerminal(int id) : Element(id){
+
 	}
 };
 
