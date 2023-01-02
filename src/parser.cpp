@@ -9,21 +9,21 @@ using namespace std;
 
 class Element {
 	// generalization for terminals and nonterminals
-	int id;
-	Element(int id){
-		this->id = id;
+	string word;
+	Element(string word){
+		this->word = word;
 	}
 };
 
 class Terminal : Element {
 
-	Terminal(int id) : Element(id){
+	Terminal(string word) : Element(word){
 
 	}
 };
 
 class NonTerminal {
-	NonTerminal(int id) : Element(id){
+	NonTerminal(string word) : Element(word){
 
 	}
 };
