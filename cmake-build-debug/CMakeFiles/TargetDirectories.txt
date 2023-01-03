@@ -1,0 +1,3 @@
+C:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/cmake-build-debug/CMakeFiles/CompilerProject.dir
+C:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir

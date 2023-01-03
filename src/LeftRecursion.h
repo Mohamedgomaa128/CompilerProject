@@ -6,7 +6,7 @@
 #define COMPILERPROJECT_MAIN_LEFTRECURSION_H
 
 
-#include "Phase 2/Nonterminal.h"
+#include "Nonterminal.h"
 
 class LeftRecursion {
 private:

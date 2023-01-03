@@ -3,7 +3,7 @@
 //
 
 #include "LeftFactoring.h"
-#include "Phase 2/Terminal.h"
+#include "Terminal.h"
 
 
 vector<Nonterminal> LeftFactoring::removeLeftFactoring(vector<Nonterminal> originalNT) {

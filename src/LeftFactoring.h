@@ -4,7 +4,7 @@
 
 #ifndef COMPILERPROJECT_MAIN_LEFTFACTORING_H
 #define COMPILERPROJECT_MAIN_LEFTFACTORING_H
-#include "../Nonterminal.h"
+#include "Nonterminal.h"
 
 class LeftFactoring {
 private:

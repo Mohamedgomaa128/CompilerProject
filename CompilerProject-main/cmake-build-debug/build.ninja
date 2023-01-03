@@ -70,8 +70,8 @@ build CMakeFiles/CompilerProject_main.dir/src/Phase_2/ModifyGrammar/LeftFactorin
   OBJECT_DIR = CMakeFiles\CompilerProject_main.dir
   OBJECT_FILE_DIR = CMakeFiles\CompilerProject_main.dir\src\Phase_2\ModifyGrammar
 
-build CMakeFiles/CompilerProject_main.dir/src/Phase_2/Symbol.cpp.obj: CXX_COMPILER__CompilerProject_main_Debug C$:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main/src/Phase$ 2/Symbol.cpp || cmake_object_order_depends_target_CompilerProject_main
-  DEP_FILE = CMakeFiles\CompilerProject_main.dir\src\Phase_2\Symbol.cpp.obj.d
+build CMakeFiles/CompilerProject_main.dir/src/Phase_2/Element.cpp.obj: CXX_COMPILER__CompilerProject_main_Debug C$:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main/src/Phase$ 2/Element.cpp || cmake_object_order_depends_target_CompilerProject_main
+  DEP_FILE = CMakeFiles\CompilerProject_main.dir\src\Phase_2\Element.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu++14
   INCLUDES = -IC:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main/. -IC:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main/src
   OBJECT_DIR = CMakeFiles\CompilerProject_main.dir
@@ -106,7 +106,7 @@ build CMakeFiles/CompilerProject_main.dir/src/Phase_2/Production.cpp.obj: CXX_CO
 #############################################
 # Link the executable CompilerProject_main.exe
 
-build CompilerProject_main.exe: CXX_EXECUTABLE_LINKER__CompilerProject_main_Debug CMakeFiles/CompilerProject_main.dir/src/prototype.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/ModifyGrammar/LeftRecursion.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/ModifyGrammar/LeftFactoring.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Symbol.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Terminal.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Nonterminal.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Production.cpp.obj
+build CompilerProject_main.exe: CXX_EXECUTABLE_LINKER__CompilerProject_main_Debug CMakeFiles/CompilerProject_main.dir/src/prototype.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/ModifyGrammar/LeftRecursion.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/ModifyGrammar/LeftFactoring.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Element.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Terminal.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Nonterminal.cpp.obj CMakeFiles/CompilerProject_main.dir/src/Phase_2/Production.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\CompilerProject_main.dir

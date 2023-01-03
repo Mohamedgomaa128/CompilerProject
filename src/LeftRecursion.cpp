@@ -3,7 +3,7 @@
 //
 
 #include "LeftRecursion.h"
-#include "Phase 2/Terminal.h"
+#include "Terminal.h"
 
 vector<Nonterminal> LeftRecursion::removeLeftRecursion(vector<Nonterminal> originalNT, Nonterminal nonterminal) {
     for (int i = 0; i < originalNT.size(); ++i) {
