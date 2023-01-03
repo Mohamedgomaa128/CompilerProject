@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/youss/Desktop/CompilerProject-main/CompilerProject-main
+# Install script for directory: C:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/youss/Desktop/CompilerProject-main/CompilerProject-main/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Samab/OneDrive/Desktop/Downloads/CompilerProject/CompilerProject-main/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
