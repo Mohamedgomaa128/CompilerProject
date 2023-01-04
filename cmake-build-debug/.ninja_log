@@ -1,19 +1,14 @@
 # ninja log v5
 10	735	6944866885418145	CMakeFiles/CompilerProject.dir/src/Element.cpp.obj	2de6f5f0647ddafe
-4	619	6944926696312387	CMakeFiles/CompilerProject.dir/src/LeftRecursion.cpp.obj	bbe2e749d2d06b8a
+7	1537	6944935689633841	CMakeFiles/CompilerProject.dir/src/LeftRecursion.cpp.obj	bbe2e749d2d06b8a
 4	456	6944892303717723	CMakeFiles/CompilerProject.dir/src/Nonterminal.cpp.obj	3de8a0e056a04421
 25	510	6944887921811845	CMakeFiles/CompilerProject.dir/src/Production.cpp.obj	b8eb384940a68037
 4	10285	6944873312133635	CMakeFiles/CompilerProject.dir/CompilerProject-main/src/prototype.cpp.obj	e7442531a8b8faba
 37	678	6944883301589273	CMakeFiles/CompilerProject.dir/src/Terminal.cpp.obj	c4c2f73453536538
 3	72	6944872781564192	CMakeFiles/CompilerProject.dir/src/prototype.cpp.obj	b744998f811aa251
-4	632	6944906919130268	CMakeFiles/CompilerProject.dir/src/LeftFactoring.cpp.obj	60a5bfa800ea7185
-9	817	6944911645448432	CMakeFiles/CompilerProject.dir/src/main.cpp.obj	4240656aacd54855
-1	183	6944935673311771	build.ninja	2aba2a4a4f3c322d
-22	665	6944883301530713	CMakeFiles/CompilerProject.dir/src/Symbol.cpp.obj	78993ebbfd2a60b5
-4	70	6944871882567088	CMakeFiles/CompilerProject.dir/src/parser.cpp.obj	3697800769492239
-620	6500	6944926755061607	CompilerProject.exe	a9eb9d42e20a12d7
-1	242	6944935673311771	build.ninja	2aba2a4a4f3c322d
-7	1537	6944935689633841	CMakeFiles/CompilerProject.dir/src/LeftRecursion.cpp.obj	bbe2e749d2d06b8a
 3	1556	6944935689828904	CMakeFiles/CompilerProject.dir/src/LeftFactoring.cpp.obj	60a5bfa800ea7185
 12	1694	6944935691219284	CMakeFiles/CompilerProject.dir/src/main.cpp.obj	4240656aacd54855
+1	242	6944940152609061	build.ninja	2aba2a4a4f3c322d
+22	665	6944883301530713	CMakeFiles/CompilerProject.dir/src/Symbol.cpp.obj	78993ebbfd2a60b5
+4	70	6944871882567088	CMakeFiles/CompilerProject.dir/src/parser.cpp.obj	3697800769492239
 1694	7231	6944935746503975	CompilerProject.exe	a9eb9d42e20a12d7
