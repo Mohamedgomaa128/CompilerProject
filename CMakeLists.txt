@@ -7,8 +7,8 @@ include_directories(src)
 
 add_executable(CompilerProject
         CompilerProject-main/src/prototype.cpp
-        src/Element.cpp
-        src/Element.h
+        src/Symbol.cpp
+        src/Symbol.h
         src/LeftFactoring.cpp
         src/LeftFactoring.h
         src/LeftRecursion.cpp
@@ -20,4 +20,4 @@ add_executable(CompilerProject
         src/Production.h
         src/prototype.cpp
         src/Terminal.cpp
-        src/Terminal.h)
+        src/Terminal.h src/main.cpp src/ModifyGrammar.h)

@@ -8,9 +8,9 @@
 
 class LeftFactoring {
 private:
-    Nonterminal start;
+    Nonterminal* start;
 public:
-    void setStart(Nonterminal startSymbol){
+    void setStart(Nonterminal* startSymbol){
         start = startSymbol;
     }
     vector<Nonterminal> eachNonTerminalLF(Nonterminal nonterminal);

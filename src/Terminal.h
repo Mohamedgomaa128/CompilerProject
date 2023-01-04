@@ -5,13 +5,14 @@
 #ifndef COMPILERPROJECT_MAIN_TERMINAL_H
 #define COMPILERPROJECT_MAIN_TERMINAL_H
 
-#include "Element.h"
+#include "Symbol.h"
 #include "vector"
 
-class Terminal : public Element{
+class Terminal : public Symbol{
 private:
     bool epsilon;
 public:
+    Terminal(string name): Symbol(name){};
     bool isEpsilon() {
         return epsilon;
     }

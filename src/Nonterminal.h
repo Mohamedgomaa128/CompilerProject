@@ -6,15 +6,15 @@
 #define COMPILERPROJECT_MAIN_NONTERMINAL_H
 
 
-#include "Element.h"
+#include "Symbol.h"
 #include "vector"
 #include "Production.h"
 using namespace std;
-class Nonterminal : public Element{
+class Nonterminal : public Symbol{
 private:
-    Element* element;
     vector<Production*> productions;
 public:
+    Nonterminal(string name): Symbol(name){};
     Production* getProduction(int i){
         return productions[i];
     }
@@ -23,9 +23,6 @@ public:
     }
     void pushProductions(Production* production){
         productions.push_back(production);
-    }
-    Element* getElement(){
-        return element;
     }
     void setProductions(vector<Production*> newProductions){
         productions.clear();

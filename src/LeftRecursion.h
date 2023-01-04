@@ -10,13 +10,13 @@
 
 class LeftRecursion {
 private:
-    Nonterminal start;
+    Nonterminal* start;
 public:
-    void setStart(Nonterminal startSymbol){
+    void setStart(Nonterminal* startSymbol){
         start = startSymbol;
     }
     vector<Nonterminal> eachNonTerminalLR(Nonterminal nonterminal);
-    vector<Nonterminal> removeLeftRecursion(vector<Nonterminal> originalNT, Nonterminal startSymbol);
+    vector<Nonterminal> removeLeftRecursion(vector<Nonterminal> originalNT, Nonterminal* startSymbol);
 
 
 

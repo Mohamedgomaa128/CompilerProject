@@ -5,28 +5,29 @@
 #ifndef COMPILERPROJECT_MAIN_PRODUCTION_H
 #define COMPILERPROJECT_MAIN_PRODUCTION_H
 #include "vector"
-#include "Element.h"
+#include "Symbol.h"
 
 using namespace std;
 
 class Production {
-private:
-    vector<Element*> elements;
+
 public:
-    vector<Element*> getElements(){
-        return elements;
+    vector<Symbol*> symbols;
+    vector<Symbol*> getSymbols(){
+        return symbols;
     }
-    Element* getElement(int i){
-        return elements[i];
+    Symbol* getSymbol(int i){
+        return symbols[i];
     }
-    string getElementName(int i){
-        return elements[i]->getName();
+    string getSymbolName(int i){
+        return symbols[i]->getName();
     }
-    void pushElements(Element* element){
-        elements.push_back(element);
+
+    void pushSymbols(Symbol* symbol){
+        symbols.push_back(symbol);
     }
-    void removeFirstElement(){
-        elements.erase(elements.begin());
+    void removeFirstSymbol(){
+        symbols.erase(symbols.begin());
     }
 };
 

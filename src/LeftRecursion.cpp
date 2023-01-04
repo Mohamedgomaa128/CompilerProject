@@ -5,7 +5,7 @@
 #include "LeftRecursion.h"
 #include "Terminal.h"
 
-vector<Nonterminal> LeftRecursion::removeLeftRecursion(vector<Nonterminal> originalNT, Nonterminal nonterminal) {
+vector<Nonterminal> LeftRecursion::removeLeftRecursion(vector<Nonterminal> originalNT, Nonterminal* nonterminal) {
     for (int i = 0; i < originalNT.size(); ++i) {
         vector<Nonterminal> outputNonTerminals = eachNonTerminalLR(originalNT[i]);
         if (outputNonTerminals.size()!= 1)
@@ -17,7 +17,7 @@ vector<Nonterminal> LeftRecursion::removeLeftRecursion(vector<Nonterminal> origi
             i = -1;
         }
     }
-    return vector<Nonterminal>();
+    return originalNT;
 }
 
 vector<Nonterminal> LeftRecursion::eachNonTerminalLR(Nonterminal nonterminal) {
@@ -25,9 +25,10 @@ vector<Nonterminal> LeftRecursion::eachNonTerminalLR(Nonterminal nonterminal) {
     vector<Production*> NLRproductions;
     vector<Nonterminal> outputNonTerminals;
     vector<Production*> productions = nonterminal.getProductions();
+    bool epsilon = false;
     bool LR = false;
     for (int i = 0; i < productions.size() ; ++i) {
-        if (productions[i]->getElement(0)->getName() == nonterminal.getElement()->getName())
+        if (productions[i]->getSymbol(0)->getName() == nonterminal.getName())
         {
             LR = true;
             break;
@@ -39,40 +40,43 @@ vector<Nonterminal> LeftRecursion::eachNonTerminalLR(Nonterminal nonterminal) {
         return outputNonTerminals;
     }
     for (int i = 0; i < productions.size() ; ++i) {
-        if (productions[i]->getElement(0)->getName() == nonterminal.getElement()->getName())
+        if (productions[i]->getSymbol(0)->getName() == nonterminal.getName())
         {
-            productions[i]->removeFirstElement();
+            productions[i]->removeFirstSymbol();
             LRproductions.push_back(productions[i]);
         } else
         {
-            NLRproductions.push_back(productions[i]);
+            if (productions[i]->getSymbol(0)->getName() == "eps")
+                epsilon = true;
+            else
+                NLRproductions.push_back(productions[i]);
         }
     }
-    Nonterminal* nonterminalDash = new Nonterminal();
+    Nonterminal* nonterminalDash = new Nonterminal(nonterminal.getName() + "DashLR");
     vector<Production*> nonterminalProductions;
 
     for (int i = 0; i < LRproductions.size(); ++i) {
-        LRproductions[i]->pushElements(nonterminalDash->getElement());
+        LRproductions[i]->pushSymbols(nonterminalDash);
         nonterminalDash->pushProductions(LRproductions[i]);
     }
 
-    if (!NLRproductions.empty())
+    if (!NLRproductions.empty() || epsilon)
     {
-        Terminal* epsilon = new Terminal();
+        Terminal* epsilon = new Terminal("eps");
         Production* epsilonProduction = new Production();
-        epsilonProduction->pushElements(epsilon);
+        epsilonProduction->pushSymbols(epsilon);
         nonterminalDash->pushProductions(epsilonProduction);
     }
 
     for (int i = 0; i < NLRproductions.size(); ++i) {
-        NLRproductions[i]->pushElements(nonterminalDash->getElement());
+        NLRproductions[i]->pushSymbols(nonterminalDash);
         nonterminalProductions.push_back(NLRproductions[i]);
     }
 
-    if (!NLRproductions.empty())
+    if (NLRproductions.empty())
     {
         Production* production =  new Production();
-        production->pushElements(nonterminalDash);
+        production->pushSymbols(nonterminalDash);
         nonterminalProductions.push_back(production);
     }
     nonterminal.setProductions(nonterminalProductions);
